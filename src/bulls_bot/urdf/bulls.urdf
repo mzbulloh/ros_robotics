@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="bulls_bot">
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.2" length="0.6" />
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 0.8 1.0" />
+      </material>
+    </visual>
+  </link>
+
+</robot>
