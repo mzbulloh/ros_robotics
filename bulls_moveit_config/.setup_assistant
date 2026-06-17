@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: bulls_bot
+    relative_path: urdf/bulls.urdf.xacro
+  srdf:
+    relative_path: config/bulls_bot.srdf
+  package_settings:
+    author_name: Ahmad
+    author_email: m11452805@mail.ntust.edu.tw
+    generated_timestamp: 1781682284
