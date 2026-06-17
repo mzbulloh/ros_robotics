@@ -1,1 +1,0 @@
-/home/user/ros2_ws/src/build/bulls_bot/ament_cmake_core/bulls_botConfig-version.cmake
