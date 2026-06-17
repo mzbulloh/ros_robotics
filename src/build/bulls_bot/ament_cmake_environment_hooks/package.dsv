@@ -1,0 +1,4 @@
+source;share/bulls_bot/local_setup.bash
+source;share/bulls_bot/local_setup.dsv
+source;share/bulls_bot/local_setup.sh
+source;share/bulls_bot/local_setup.zsh
