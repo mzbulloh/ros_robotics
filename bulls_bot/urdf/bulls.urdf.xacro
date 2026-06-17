@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bulls_bot">
+
+  <xacro:property name="b_rad" value="0.2" /><xacro:property name="b_len" value="0.6" />
+  <xacro:property name="l1_rad" value="0.08" /><xacro:property name="l1_len" value="0.4" />
+  <xacro:property name="l2_rad" value="0.06" /><xacro:property name="l2_len" value="0.4" />
+  <xacro:property name="l3_rad" value="0.05" /><xacro:property name="l3_len" value="0.3" />
+
+  <material name="blue"><color rgba="0.0 0.0 0.8 1.0" /></material>
+  <material name="red"><color rgba="0.8 0.0 0.0 1.0" /></material>
+  <material name="green"><color rgba="0.0 0.8 0.0 1.0" /></material>
+  <material name="dark_grey"><color rgba="0.3 0.3 0.3 1.0" /></material>
+
+  <xacro:macro name="make_link" params="name radius length color">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry><cylinder radius="${radius}" length="${length}" /></geometry>
+        <material name="${color}" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${length/2}" rpy="0 0 0" />
+        <geometry><cylinder radius="${radius}" length="${length}" /></geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${b_len/2}" rpy="0 0 0" />
+      <geometry><cylinder radius="${b_rad}" length="${b_len}" /></geometry>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${b_len/2}" rpy="0 0 0" />
+      <geometry><cylinder radius="${b_rad}" length="${b_len}" /></geometry>
+    </collision>
+  </link>
+
+  <xacro:make_link name="link_1" radius="${l1_rad}" length="${l1_len}" color="red" />
+  <xacro:make_link name="link_2" radius="${l2_rad}" length="${l2_len}" color="green" />
+  <xacro:make_link name="link_3" radius="${l3_rad}" length="${l3_len}" color="blue" />
+
+  <joint name="arm_0_joint" type="revolute">
+    <parent link="base_link"/><child link="link_1"/>
+    <origin xyz="0 0 ${b_len}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="10.0" velocity="1.0"/>
+  </joint>
+
+  <joint name="arm_1_joint" type="revolute">
+    <parent link="link_1"/><child link="link_2"/>
+    <origin xyz="0 0 ${l1_len}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="10.0" velocity="1.0"/>
+  </joint>
+
+  <joint name="arm_2_joint" type="revolute">
+    <parent link="link_2"/><child link="link_3"/>
+    <origin xyz="0 0 ${l2_len}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-2.0" upper="2.0" effort="10.0" velocity="1.0"/>
+  </joint>
+
+  <joint name="gripper_base_joint" type="fixed">
+    <parent link="link_3"/><child link="gripper_base"/>
+    <origin xyz="0 0 ${l3_len}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="gripper_base">
+    <visual>
+      <origin xyz="0 0 0.02" rpy="0 0 0" /><geometry><box size="0.2 0.04 0.04" /></geometry>
+      <material name="dark_grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.02" rpy="0 0 0" /><geometry><box size="0.2 0.04 0.04" /></geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_finger_joint_1" type="prismatic">
+    <parent link="gripper_base"/><child link="left_finger"/>
+    <origin xyz="-0.08 0 0.04" rpy="0 0 0"/><axis xyz="1 0 0"/>
+    <limit lower="0.0" upper="0.06" effort="5.0" velocity="0.5"/>
+  </joint>
+
+  <link name="left_finger">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0" /><geometry><box size="0.02 0.03 0.08" /></geometry>
+      <material name="red" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0" /><geometry><box size="0.02 0.03 0.08" /></geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_finger_joint_2" type="prismatic">
+    <parent link="gripper_base"/><child link="right_finger"/>
+    <origin xyz="0.08 0 0.04" rpy="0 0 0"/><axis xyz="-1 0 0"/>
+    <limit lower="0.0" upper="0.06" effort="5.0" velocity="0.5"/>
+  </joint>
+
+  <link name="right_finger">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0" /><geometry><box size="0.02 0.03 0.08" /></geometry>
+      <material name="red" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0" /><geometry><box size="0.02 0.03 0.08" /></geometry>
+    </collision>
+  </link>
+
+</robot>
