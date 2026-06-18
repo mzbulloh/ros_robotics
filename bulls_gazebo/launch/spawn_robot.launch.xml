@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <let name="use_sim_time" value="true" />
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+    <param name="robot_description"
+           value="$(command 'xacro $(find-pkg-share bulls_moveit_config)/config/bulls_bot.urdf.xacro')"
+           type="str" />
+  </node>
+
+  <node pkg="ros_gz_sim" exec="create" name="robot_spawner" output="screen"
+        args="-world empty -topic /robot_description -name bulls_bot"/>
+
+  <node pkg="controller_manager" exec="spawner" name="broadcaster_spawner" output="screen"
+        args="joint_state_broadcaster -c /controller_manager" />
+</launch>
